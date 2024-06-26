@@ -1,0 +1,26 @@
+@import 'src/assets/scss/mixins.scss';
+
+.input-container {
+    @include Flex(center, flex-start, column);
+    position: relative;
+    gap: 0.25em;
+}
+
+.input--text {
+    width: 100%;
+    padding: 0.5em 0.75em;
+    border: 1px solid $gray-300;
+    border-radius: 0.5em;
+
+    &:focus {
+        outline: 3px solid $primary-100;
+    }
+
+    &:disabled {
+        background-color: $primary-100;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
