@@ -1,4 +1,5 @@
 @import 'src/assets/scss/mixins.scss';
+@import 'src/assets/scss/variables.scss';
 
 .input-container {
     @include Flex(center, flex-start, column);

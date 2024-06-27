@@ -1,4 +1,5 @@
 @import 'src/assets/scss/mixins.scss';
+@import 'src/assets/scss/variables.scss';
 
 .modal-container {
     @include Flex(center, center);
@@ -7,8 +8,8 @@
     height: 100vh;
     z-index: 100;
     top: 0;
-    background-color: #cccccc60;
-    backdrop-filter: blur(10px);
+    background-color: rgba($gray-800, 0.3);
+    backdrop-filter: blur(4px);
 
     .backdrop {
         position: fixed;
@@ -24,7 +25,7 @@
     .modal {
         @include Flex(center, center, column);
         width: 100%;
-        max-width: 500px;
+        max-width: 400px;
         background: #ffffff;
         padding: 1em;
         border-radius: 1em;
