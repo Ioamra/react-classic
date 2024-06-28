@@ -1,0 +1,113 @@
+@import 'src/assets/scss/utils/_variables.scss';
+
+.btn {
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn--primary {
+    border: 1px solid $primary-200;
+    background: $primary-500;
+    color: white;
+    &:hover {
+        background-color: $primary-600;
+    }
+    &:focus {
+        outline: 3px solid $primary-400;
+    }
+    &:disabled {
+        background-color: $primary-100;
+        border-color: $primary-100;
+        color: white;
+    }
+}
+
+.btn--white {
+    border: 1px solid $gray-300;
+    background: white;
+    color: $gray-700;
+    &:hover {
+        background-color: $gray-300;
+    }
+    &:focus {
+        outline: 3px solid $gray-100;
+    }
+    &:disabled {
+        background-color: white;
+        border-color: $gray-200;
+        color: $gray-300;
+    }
+}
+
+.btn--gray {
+    background: $gray-100;
+    color: $gray-700;
+    &:hover {
+        background-color: $gray-200;
+        color: $primary-900;
+    }
+    &:focus {
+        outline: 3px solid $primary-400;
+    }
+    &:disabled {
+        background-color: $gray-100;
+        color: $gray-300;
+    }
+}
+
+.btn--error{
+    background: $error-600;
+    color: white;
+    &:hover{
+        background-color: $error-700;
+    }
+    &:focus{
+        outline: 3px solid $error-100;
+    }
+    &:disabled{
+        background-color: $error-200;
+    }
+}
+
+.btn--error-light{
+    border: 1px solid $error-300;
+    background: white;
+    color: $error-700;
+    &:hover{
+        background-color: $error-200;
+    }
+    &:focus{
+        outline: 3px solid $error-100;
+    }
+    &:disabled{
+        background-color: white;
+        color: $error-300;
+        border-color: $error-200;
+    }
+}
+
+.btn--xs {
+    font-size: 0.875em;
+    padding: 0.5em 0.875em;
+}
+
+.btn--sm {
+    font-size: 0.875em;
+    padding: 0.625em 1em;
+}
+
+.btn--md {
+    font-size: 1em;
+    padding: 0.625em 1.125em;   
+}
+
+.btn--lg {
+    font-size: 1em;
+    padding: 0.75em 1.25em;
+}
+
+.btn--xl {
+    font-size: 1.125em;
+    padding: 1em 1.75em;
+}

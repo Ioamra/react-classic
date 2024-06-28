@@ -1,14 +1,18 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
-import '../../../assets/scss/main.scss';
-import '../../../assets/scss/modal.scss';
+import { useNavigate } from 'react-router-dom';
+// import '../../../assets/scss/layout/_modal.scss';
 import './auth-modal.scss';
+import InputText from '../../inputs/input-text/input-text';
+import Checkbox from '../../inputs/checkbox/checkbox';
+import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
 
 interface AuthModalProps {
-    onClose: () => void;
+    onClose: () => void,
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
+    const navigate = useNavigate();
+    const emailPattern = "[a-z0-9]+@[a-z]+\.[a-z]{2,3}";
     const [modalType, setModalType] = useState('login');
     const [loginFormData, setLoginFormData] = useState({
         email: '',
@@ -57,6 +61,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         }
     };
 
+    const handleClickTOU = () => {
+        navigate('/condition-generale-utilisation');
+    }
+
     return (
         <article className="modal-container">
             <section className="backdrop" onClick={onClose}></section>
@@ -76,103 +84,94 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                 <section className="modal__body">
                     {modalType === 'login' && (
                         <form onSubmit={handleSubmit}>
-                            <section className="input-container">
-                                <label htmlFor="email">Adresse e-mail</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    placeholder="exemple@gmail.com"
-                                    name="email"
-                                    onChange={handleInputChange}
-                                    value={loginFormData.email}
-                                    required
-                                />
-                            </section>
-                            <section className="input-container">
-                                <label htmlFor="password">Mot de passe</label>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    placeholder="Votre mot de passe..."
-                                    name="password"
-                                    onChange={handleInputChange}
-                                    value={loginFormData.password}
-                                    required
-                                />
-                            </section>
-                            <section className="input-container">
-                                <p onClick={() => setModalType('forgot password')}>Mot de passe oublié ?</p>
-                                <section>
-                                    <input
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        name="rememberMe"
-                                        onChange={handleInputChange}
-                                        value={loginFormData.rememberMe ? 'checked' : ''}
-                                    />
-                                    <label htmlFor="rememberMe">Rester connecté</label>
-                                </section>
-                            </section>
-                            <button type="submit">Se connecter</button>
+                            <InputText
+                                onChange={handleInputChange}
+                                id="email"
+                                name="email"
+                                label="Adresse email"
+                                value={loginFormData.email}
+                                type="email"
+                                required={true}
+                                placeholder="exemple@gmail.com"
+                                pattern={emailPattern}
+                                errorMessage="Veuillez entrer une adresse email valide."
+                            />
+                            <InputText
+                                onChange={handleInputChange}
+                                id="password"
+                                name="password"
+                                label="Mot de passe"
+                                value={loginFormData.password}
+                                type="password"
+                                required={true}
+                                placeholder="Votre mot de passe..."
+                            />
+                            <p className="clickable" onClick={() => setModalType('forgot password')}>Mot de passe oublié ?</p>
+                            <Checkbox
+                                onChange={handleInputChange}
+                                id="rememberMe"
+                                name="rememberMe"
+                                label="Rester connecté"
+                                value={loginFormData.rememberMe ? "checked" : ""}
+                                required={false}
+                            />
+                            <button className="btn btn--md btn--primary" type="submit">Se connecter</button>
                         </form>
                     )}
                     {modalType === 'register' && (
                         <form onSubmit={handleSubmit}>
-                            <section className="input-container">
-                                <label htmlFor="email">Adresse e-mail</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    placeholder="exemple@gmail.com"
-                                    name="email"
-                                    onChange={handleInputChange}
-                                    value={registerFormData.email}
-                                    required
-                                />
-                            </section>
-                            <section className="input-container">
-                                <label htmlFor="password-one">Mot de passe</label>
-                                <input
-                                    id="password-one"
-                                    type="password"
-                                    placeholder="Votre mot de passe..."
-                                    name="password_one"
-                                    onChange={handleInputChange}
-                                    value={registerFormData.password_one}
-                                    required
-                                />
-                            </section>
-                            <section className="input-container">
-                                <label htmlFor="password-two">Mot de passe</label>
-                                <input
-                                    id="password-two"
-                                    type="password"
-                                    placeholder="Confirmez votre mot de passe..."
-                                    name="password_two"
-                                    onChange={handleInputChange}
-                                    value={registerFormData.password_two}
-                                    required
-                                />
-                            </section>
-                            <button type="submit">S'inscrire</button>
+                            <InputText
+                                onChange={handleInputChange}
+                                id="email"
+                                name="email"
+                                label="Adresse email"
+                                value={registerFormData.email}
+                                type="email"
+                                required={true}
+                                placeholder="exemple@gmail.com"
+                                pattern={emailPattern}
+                                errorMessage="Veuillez entrer une adresse email valide."
+                            />
+                            <InputText
+                                onChange={handleInputChange}
+                                id="password-one"
+                                name="password-one"
+                                label="Mot de passe"
+                                value={registerFormData.password_one}
+                                type="password"
+                                required={true}
+                                placeholder="Votre mot de passe..."
+                            />
+                            <InputText
+                                onChange={handleInputChange}
+                                id="password-two"
+                                name="password-two"
+                                label="Mot de passe"
+                                value={registerFormData.password_two}
+                                type="password"
+                                required={true}
+                                placeholder="Confirmez votre mot de passe..."
+                            />
+                            <p className="text-center">En créant un compte, vous acceptez les <span className="clickable" onClick={handleClickTOU}>conditions générale d'utilisation</span> de React-classic.</p>
+                            <button className="btn btn--md btn--primary" type="submit">S'inscrire</button>
                         </form>
                     )}
                     {modalType === 'forgot password' && (
                         <form onSubmit={handleSubmit}>
-                            <section className="input-container">
-                                <label htmlFor="email">Adresse e-mail</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    placeholder="exemple@gmail.com"
-                                    name="email"
-                                    onChange={handleInputChange}
-                                    value={forgotPasswordEmail}
-                                    required
-                                />
-                            </section>
-                            <button type="submit">Continuer</button>
-                            <button onClick={() => setModalType('login')}>Annuler</button>
+                            <InputText
+                                onChange={handleInputChange}
+                                id="email"
+                                name="email"
+                                label="Adresse email"
+                                value={forgotPasswordEmail}
+                                type="email"
+                                required={true}
+                                placeholder="exemple@gmail.com"
+                                pattern={emailPattern}
+                                errorMessage="Veuillez entrer une adresse email valide."
+                            />
+                            <button className="btn btn--md btn--primary" type="submit">Continuer</button>
+                            <button className="btn btn--md btn--gray" onClick={() => setModalType('login')}>Annuler</button>
                         </form>
                     )}
                 </section>

@@ -1,0 +1,24 @@
+@import 'src/assets/scss/utils/_mixins.scss';
+@import 'src/assets/scss/utils/_variables.scss';
+
+form {
+    @include Flex(center, center, column);
+    gap: 1em;
+
+    .input-container {
+        width: 280px;
+    }
+}
+
+p {
+    margin: 0;
+}
+
+.clickable {
+    color: $primary-400;
+    font-weight: 500;
+}
+
+button {
+    min-width: 130px;
+}

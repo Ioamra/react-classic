@@ -1,5 +1,5 @@
-@import 'src/assets/scss/mixins.scss';
-@import 'src/assets/scss/variables.scss';
+@import 'src/assets/scss/utils/_mixins.scss';
+@import 'src/assets/scss/utils/_variables.scss';
 
 .modal-container {
     @include Flex(center, center);
@@ -35,7 +35,7 @@
             @include Flex(center, center);
             width: 100%;
             position: relative;
-            padding: 0 0 1em 0;
+            padding: 0 0 0.5em 0;
 
             h2 {
                 text-align: center;
