@@ -11,12 +11,12 @@ interface CheckboxProps {
 
 const Checkbox: React.FC<CheckboxProps> = ({ onChange, id, name, label, value, required }) => {
     return (
-        <section className="checkbox-container">
+        <section className='checkbox-container'>
             <input
                 id={id}
                 name={name}
-                type="checkbox"
-                className="input--checkbox"
+                type='checkbox'
+                className='input--checkbox'
                 onChange={onChange}
                 value={value}
                 required={required}

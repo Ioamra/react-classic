@@ -40,7 +40,7 @@ const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, labe
     };
 
     return (
-        <section className="input-container">
+        <section className='input-container'>
             <label htmlFor={id}>{label}</label>
             <input
                 id={id}
@@ -52,7 +52,7 @@ const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, labe
                 value={value}
                 required={required}
             />
-            {error && <span className="error-500 text--sm">{error}</span>}
+            {error && <span className='error-500 text--sm'>{error}</span>}
         </section>
     )
 }
