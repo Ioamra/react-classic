@@ -1,19 +1,45 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import '../../../assets/scss/layout/_modal.scss';
 import './auth-modal.scss';
 import InputText from '../../inputs/input-text/input-text';
 import Checkbox from '../../inputs/checkbox/checkbox';
 import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
 
 interface AuthModalProps {
-    onClose: () => void,
+    onClose: () => void;
 }
+
+type LoginErrors = {
+    email: boolean;
+    password: boolean;
+};
+
+type RegisterErrors = {
+    email: boolean;
+    passwordOne: boolean;
+    passwordTwo: boolean;
+    passwordMatch: boolean;
+};
+
+type ForgotPasswordErrors = {
+    forgotPassword: boolean;
+};
+
+type FormErrors = {
+    login: LoginErrors;
+    register: RegisterErrors;
+    forgotPassword: ForgotPasswordErrors;
+};
+
+type FormType = keyof FormErrors;
+type FieldType<T> = keyof T;
+
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const navigate = useNavigate();
     const emailPattern = "[a-z0-9]+@[a-z]+\.[a-z]{2,3}";
-    const [modalType, setModalType] = useState('login');
+    const passwordPattern = "^.{6,}$";
+    const [modalType, setModalType] = useState<'login' | 'register' | 'forgotPassword' >('login');
     const [loginFormData, setLoginFormData] = useState({
         email: '',
         password: '',
@@ -21,10 +47,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     });
     const [registerFormData, setRegisterFormData] = useState({
         email: '',
-        password_one: '',
-        password_two: ''
+        passwordOne: '',
+        passwordTwo: ''
     });
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
+    const [allError, setAllError] = useState<FormErrors>({
+        login: { email: true, password: true },
+        register: { email: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
+        forgotPassword: { forgotPassword: true },
+    });
+
+    const checkPasswordMatch = () => {
+        const error = registerFormData.passwordOne !== registerFormData.passwordTwo;
+        handleError('register', 'passwordMatch', error);
+    };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = event.target;
@@ -45,9 +81,27 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                 ...prevData,
                 [name]: value
             }));
-        } else if (modalType === 'forgot password') {
+            if (name === 'passwordOne' || name === 'passwordTwo') {
+                checkPasswordMatch();
+            }
+        } else if (modalType === 'forgotPassword') {
             setForgotPasswordEmail(value);
         }
+    };
+
+    const handleError = <T extends FormType>(formType: T, fieldName: FieldType<FormErrors[T]>, error: boolean) => {
+        setAllError(prevErrors => ({
+            ...prevErrors,
+            [formType]: {
+                ...prevErrors[formType],
+                [fieldName]: error,
+            },
+        }));
+    };
+
+    const hasErrors = () => {
+        const formErrors = allError[modalType];
+        return Object.values(formErrors).some(error => error);
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -56,7 +110,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
             console.log(loginFormData);
         } else if (modalType === 'register') {
             console.log(registerFormData);
-        } else if (modalType === 'forgot password') {
+        } else if (modalType === 'forgotPassword') {
             console.log(forgotPasswordEmail);
         }
     };
@@ -64,6 +118,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const handleClickTOU = () => {
         navigate('/condition-generale-utilisation');
     }
+    
+    useEffect(() => {
+        const error = registerFormData.passwordOne !== registerFormData.passwordTwo;
+        handleError('register', 'passwordMatch', error);
+    }, [registerFormData.passwordOne, registerFormData.passwordTwo]);
 
     return (
         <article className="modal-container">
@@ -76,7 +135,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                     {modalType === 'register' && (
                         <h2>Inscription</h2>
                     )}
-                    {modalType === 'forgot password' && (
+                    {modalType === 'forgotPassword' && (
                         <h2>Mot de passe oublié</h2>
                     )}
                     <CloseIcon className='modal__header__close' onClick={onClose}/>
@@ -86,6 +145,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                         <form onSubmit={handleSubmit}>
                             <InputText
                                 onChange={handleInputChange}
+                                onError={(error) => handleError('login', 'email', error)}
                                 id="email"
                                 name="email"
                                 label="Adresse email"
@@ -98,6 +158,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                             />
                             <InputText
                                 onChange={handleInputChange}
+                                onError={(error) => handleError('login', 'password', error)}
                                 id="password"
                                 name="password"
                                 label="Mot de passe"
@@ -105,8 +166,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 type="password"
                                 required={true}
                                 placeholder="Votre mot de passe..."
+                                pattern={passwordPattern}
+                                errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
-                            <p className="clickable" onClick={() => setModalType('forgot password')}>Mot de passe oublié ?</p>
+                            <p className="clickable text--md" onClick={() => setModalType('forgotPassword')}>Mot de passe oublié ?</p>
                             <Checkbox
                                 onChange={handleInputChange}
                                 id="rememberMe"
@@ -115,13 +178,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 value={loginFormData.rememberMe ? "checked" : ""}
                                 required={false}
                             />
-                            <button className="btn btn--md btn--primary" type="submit">Se connecter</button>
+                            <button className="btn btn--md btn--primary" type="submit" disabled={hasErrors()}>Se connecter</button>
                         </form>
                     )}
                     {modalType === 'register' && (
                         <form onSubmit={handleSubmit}>
                             <InputText
                                 onChange={handleInputChange}
+                                onError={(error) => handleError('register', 'email', error)}
                                 id="email"
                                 name="email"
                                 label="Adresse email"
@@ -134,32 +198,41 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                             />
                             <InputText
                                 onChange={handleInputChange}
-                                id="password-one"
-                                name="password-one"
+                                onError={(error) => handleError('register', 'passwordOne', error)}
+                                id="passwordOne"
+                                name="passwordOne"
                                 label="Mot de passe"
-                                value={registerFormData.password_one}
+                                value={registerFormData.passwordOne}
                                 type="password"
                                 required={true}
-                                placeholder="Votre mot de passe..."
+                                placeholder="Au moins 6 caractères"
+                                pattern={passwordPattern}
+                                errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
                             <InputText
                                 onChange={handleInputChange}
-                                id="password-two"
-                                name="password-two"
-                                label="Mot de passe"
-                                value={registerFormData.password_two}
+                                id="passwordTwo"
+                                name="passwordTwo"
+                                onError={(error) => handleError('register', 'passwordTwo', error)}
+                                label="Entrez le mot de passe à nouveau"
+                                value={registerFormData.passwordTwo}
                                 type="password"
                                 required={true}
-                                placeholder="Confirmez votre mot de passe..."
+                                pattern={passwordPattern}
+                                errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
-                            <p className="text-center">En créant un compte, vous acceptez les <span className="clickable" onClick={handleClickTOU}>conditions générale d'utilisation</span> de React-classic.</p>
-                            <button className="btn btn--md btn--primary" type="submit">S'inscrire</button>
+                            {allError.register.passwordMatch && !allError.register.passwordOne && !allError.register.passwordTwo && (
+                                <span className="error-same-password text--sm error-500">Les mots de passe ne correspondent pas.</span>
+                            )}
+                            <p className="text-center text--md">En créant un compte, vous acceptez les <span className="clickable" onClick={handleClickTOU}>conditions générale d'utilisation</span> de React-classic.</p>
+                            <button className="btn btn--md btn--primary" type="submit" disabled={hasErrors()}>S'inscrire</button>
                         </form>
                     )}
-                    {modalType === 'forgot password' && (
+                    {modalType === 'forgotPassword' && (
                         <form onSubmit={handleSubmit}>
                             <InputText
                                 onChange={handleInputChange}
+                                onError={(error) => handleError('forgotPassword', 'forgotPassword', error)}
                                 id="email"
                                 name="email"
                                 label="Adresse email"
@@ -170,17 +243,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 pattern={emailPattern}
                                 errorMessage="Veuillez entrer une adresse email valide."
                             />
-                            <button className="btn btn--md btn--primary" type="submit">Continuer</button>
+                            <button className="btn btn--md btn--primary" type="submit" disabled={hasErrors()}>Continuer</button>
                             <button className="btn btn--md btn--gray" onClick={() => setModalType('login')}>Annuler</button>
                         </form>
                     )}
                 </section>
                 <section className="modal__footer">
                     {modalType === 'login' && (
-                        <p>Vous n'avez pas de compte ? <span className="clickable" onClick={() => setModalType('register')}>Inscrivez-vous</span>.</p>
+                        <p>Vous n'avez pas de compte ? <span className="clickable text--md" onClick={() => setModalType('register')}>Inscrivez-vous</span>.</p>
                     )}
                     {modalType === 'register' && (
-                        <p>Déjà inscrit ? <span className="clickable" onClick={() => setModalType('login')}>Connectez-vous</span>.</p>
+                        <p>Déjà inscrit ? <span className="clickable text--md" onClick={() => setModalType('login')}>Connectez-vous</span>.</p>
                     )}
                 </section>
             </section>

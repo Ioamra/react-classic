@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react';
 
 interface CheckboxProps {
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void,
-    id: string,
-    name: string,
-    label: string,
-    value: string,
-    required: boolean
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    id: string;
+    name: string;
+    label: string;
+    value: string;
+    required: boolean;
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({ onChange, id, name, label, value, required }) => {
