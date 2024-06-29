@@ -1,6 +1,7 @@
 @import 'src/assets/scss/utils/_mixins.scss';
 @import 'src/assets/scss/utils/_variables.scss';
 
+
 .modal-container {
     @include Flex(center, center);
     position: fixed;
@@ -8,6 +9,7 @@
     height: 100vh;
     z-index: 100;
     top: 0;
+    left: 0;
     background-color: rgba($gray-800, 0.3);
     backdrop-filter: blur(4px);
 
@@ -16,6 +18,7 @@
         width: 100vw;
         height: 100vh;
         top: 0;
+        left: 0;
         z-index: -10;
         overflow: hidden;
         background-color: transparent;
@@ -30,7 +33,17 @@
         padding: 1em;
         border-radius: 1em;
         gap: 0.5em;
-    
+        animation: slideDown 1s ease-out;
+
+        @keyframes slideDown {
+            from {
+            transform: translateY(-150%);
+            }
+            to {
+            transform: translateY(0);
+            }
+        }
+
         &__header {
             @include Flex(center, center);
             width: 100%;

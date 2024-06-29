@@ -10,16 +10,12 @@ form {
     }
 }
 
-p {
-    margin: 0;
-}
-
 .clickable {
     color: $primary-400;
     font-weight: 500;
 }
 
-button {
+.btn--modal-size {
     min-width: 130px;
 }
 

@@ -178,7 +178,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 value={loginFormData.rememberMe ? 'checked' : ''}
                                 required={false}
                             />
-                            <button className='btn btn--md btn--primary' type='submit' disabled={hasErrors()}>Se connecter</button>
+                            <button className='btn btn--md btn--primary btn--modal-size' type='submit' disabled={hasErrors()}>Se connecter</button>
                         </form>
                     )}
                     {modalType === 'register' && (
@@ -225,7 +225,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 <span className='error-same-password text--sm error-500'>Les mots de passe ne correspondent pas.</span>
                             )}
                             <p className='text-center text--md'>En créant un compte, vous acceptez les <span className='clickable' onClick={handleClickTOU}>conditions générale d'utilisation</span> de React-classic.</p>
-                            <button className='btn btn--md btn--primary' type='submit' disabled={hasErrors()}>S'inscrire</button>
+                            <button className='btn btn--md btn--primary btn--modal-size' type='submit' disabled={hasErrors()}>S'inscrire</button>
                         </form>
                     )}
                     {modalType === 'forgotPassword' && (
@@ -243,8 +243,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 pattern={emailPattern}
                                 errorMessage='Veuillez entrer une adresse email valide.'
                             />
-                            <button className='btn btn--md btn--primary' type='submit' disabled={hasErrors()}>Continuer</button>
-                            <button className='btn btn--md btn--gray' onClick={() => setModalType('login')}>Annuler</button>
+                            <button className='btn btn--md btn--primary btn--modal-size' type='submit' disabled={hasErrors()}>Continuer</button>
+                            <button className='btn btn--md btn--gray btn--modal-size' onClick={() => setModalType('login')}>Annuler</button>
                         </form>
                     )}
                 </section>

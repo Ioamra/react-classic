@@ -6,11 +6,9 @@ import './assets/scss/main.scss';
 const App: React.FC = () => {
   return (
     <Router>
-      <div>
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
-      </div>
     </Router>
   );
 };

@@ -5,7 +5,9 @@ const HomePage: React.FC = () => {
     return (
         <div>
             <Navbar/>
-            <h1>Page d'acceuil</h1>
+            <main>
+                <h1>Page d'acceuil</h1>
+            </main>
         </div>
     );
 };
