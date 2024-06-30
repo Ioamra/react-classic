@@ -4,18 +4,19 @@ import './auth-modal.scss';
 import InputText from '../../inputs/input-text/input-text';
 import Checkbox from '../../inputs/checkbox/checkbox';
 import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
+import { login } from '../../../services/general/auth';
 
 interface AuthModalProps {
     onClose: () => void;
 }
 
 type LoginErrors = {
-    email: boolean;
-    password: boolean;
+    email_users: boolean;
+    password_users: boolean;
 };
 
 type RegisterErrors = {
-    email: boolean;
+    email_users: boolean;
     passwordOne: boolean;
     passwordTwo: boolean;
     passwordMatch: boolean;
@@ -41,19 +42,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const passwordPattern = '^.{6,}$';
     const [modalType, setModalType] = useState<'login' | 'register' | 'forgotPassword' >('login');
     const [loginFormData, setLoginFormData] = useState({
-        email: '',
-        password: '',
+        email_users: 'admin@gmail.com',
+        password_users: 'azerty',
         rememberMe: false
     });
     const [registerFormData, setRegisterFormData] = useState({
-        email: '',
+        email_users: '',
         passwordOne: '',
         passwordTwo: ''
     });
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
     const [allError, setAllError] = useState<FormErrors>({
-        login: { email: true, password: true },
-        register: { email: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
+        login: { email_users: true, password_users: true },
+        register: { email_users: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
         forgotPassword: { forgotPassword: true },
     });
 
@@ -107,7 +108,21 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (modalType === 'login') {
-            console.log(loginFormData);
+            login(loginFormData).then(res => {
+                console.log(res)
+                switch (res.status) {
+                    case 200:
+                        localStorage.setItem('accessToken', res.data);
+                        onClose();
+                        break;
+                    case 400:
+                        // TODO : afficher un message d'erreur identifiant ou mot de passe incorecte
+                        break;
+                    default:
+                        // TODO : afficher un message d'erreur dans une alert "Une erreur est survenue."
+                        break;
+                }
+            })
         } else if (modalType === 'register') {
             console.log(registerFormData);
         } else if (modalType === 'forgotPassword') {
@@ -145,11 +160,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                         <form onSubmit={handleSubmit}>
                             <InputText
                                 onChange={handleInputChange}
-                                onError={(error) => handleError('login', 'email', error)}
-                                id='email'
-                                name='email'
+                                onError={(error) => handleError('login', 'email_users', error)}
+                                id='email_users'
+                                name='email_users'
                                 label='Adresse email'
-                                value={loginFormData.email}
+                                value={loginFormData.email_users}
                                 type='email'
                                 required={true}
                                 placeholder='exemple@gmail.com'
@@ -158,11 +173,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                             />
                             <InputText
                                 onChange={handleInputChange}
-                                onError={(error) => handleError('login', 'password', error)}
-                                id='password'
-                                name='password'
+                                onError={(error) => handleError('login', 'password_users', error)}
+                                id='password_users'
+                                name='password_users'
                                 label='Mot de passe'
-                                value={loginFormData.password}
+                                value={loginFormData.password_users}
                                 type='password'
                                 required={true}
                                 placeholder='Votre mot de passe...'
@@ -185,11 +200,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                         <form onSubmit={handleSubmit}>
                             <InputText
                                 onChange={handleInputChange}
-                                onError={(error) => handleError('register', 'email', error)}
-                                id='email'
-                                name='email'
+                                onError={(error) => handleError('register', 'email_users', error)}
+                                id='email_users'
+                                name='email_users'
                                 label='Adresse email'
-                                value={registerFormData.email}
+                                value={registerFormData.email_users}
                                 type='email'
                                 required={true}
                                 placeholder='exemple@gmail.com'
@@ -233,8 +248,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                             <InputText
                                 onChange={handleInputChange}
                                 onError={(error) => handleError('forgotPassword', 'forgotPassword', error)}
-                                id='email'
-                                name='email'
+                                id='email_users'
+                                name='email_users'
                                 label='Adresse email'
                                 value={forgotPasswordEmail}
                                 type='email'
