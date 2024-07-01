@@ -1,4 +1,4 @@
-export default class HttpClient {
+export default class HttpService {
     baseUrl: string = 'http://localhost:5000/';
     headers: {
         "Content-Type": string,

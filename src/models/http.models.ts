@@ -1,4 +1,4 @@
-export declare module HttpClientModels {
+export declare module HttpModels {
     interface IQueryResponseWithoutData {
         message: string;
         status: number;

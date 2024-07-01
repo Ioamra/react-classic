@@ -4,37 +4,12 @@ import './auth-modal.scss';
 import InputText from '../../inputs/input-text/input-text';
 import Checkbox from '../../inputs/checkbox/checkbox';
 import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
-import { login } from '../../../services/general/auth';
+import { login } from '../../../services/general/auth.service';
+import { AuthModels } from '../../../models/general/auth.models';
 
 interface AuthModalProps {
     onClose: () => void;
 }
-
-type LoginErrors = {
-    email_users: boolean;
-    password_users: boolean;
-};
-
-type RegisterErrors = {
-    email_users: boolean;
-    passwordOne: boolean;
-    passwordTwo: boolean;
-    passwordMatch: boolean;
-};
-
-type ForgotPasswordErrors = {
-    forgotPassword: boolean;
-};
-
-type FormErrors = {
-    login: LoginErrors;
-    register: RegisterErrors;
-    forgotPassword: ForgotPasswordErrors;
-};
-
-type FormType = keyof FormErrors;
-type FieldType<T> = keyof T;
-
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const navigate = useNavigate();
@@ -52,7 +27,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         passwordTwo: ''
     });
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
-    const [allError, setAllError] = useState<FormErrors>({
+    const [allError, setAllError] = useState<AuthModels.IFormErrors>({
         login: { email_users: true, password_users: true },
         register: { email_users: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
         forgotPassword: { forgotPassword: true },
@@ -90,7 +65,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         }
     };
 
-    const handleError = <T extends FormType>(formType: T, fieldName: FieldType<FormErrors[T]>, error: boolean) => {
+    const handleError = <T extends AuthModels.IFormType>(formType: T, fieldName: AuthModels.IFieldType<AuthModels.IFormErrors[T]>, error: boolean) => {
         setAllError(prevErrors => ({
             ...prevErrors,
             [formType]: {
