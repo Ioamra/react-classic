@@ -8,16 +8,16 @@ import { login } from '../../../services/general/auth.service';
 import { AuthModels } from '../../../models/general/auth.models';
 import TimedAlert from '../../alerts/timed-alert/timed-alert';
 import { AlertModels } from '../../../models/general/alert.models';
+
 interface AuthModalProps {
     onClose: () => void;
 }
-
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const navigate = useNavigate();
     const emailPattern = '[a-z0-9]+@[a-z]+\.[a-z]{2,3}';
     const passwordPattern = '^.{6,}$';
-    const [modalType, setModalType] = useState<'login' | 'register' | 'forgotPassword'>('login');
+    const [modalType, setModalType] = useState<'login' | 'register' | 'forgotPassword' >('login');
     const [loginFormData, setLoginFormData] = useState({
         email_users: 'admin@gmail.com',
         password_users: 'azerty',
@@ -58,7 +58,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
             ['show']: false
         }));
     };
-
+    
     const changeModalType = (modalType: 'login' | 'register' | 'forgotPassword') => {
         setErrorAfterSubmit({ show: false, message: '' });
         setModalType(modalType);
@@ -123,7 +123,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                         onClose();
                         break;
                     case 400:
-                        setErrorAfterSubmit({ show: true, message: 'Identifiant ou mot de passe incorrect.' });
+                        setErrorAfterSubmit({
+                            show: true,
+                            message: 'Identifiant ou mot de passe incorrect.'
+                        });
                         break;
                     default:
                         setAlert({
@@ -190,7 +193,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 required={true}
                                 placeholder='exemple@gmail.com'
                                 pattern={emailPattern}
-                                showErrorBorder={errorAfterSubmit.show}
                                 errorMessage='Veuillez entrer une adresse email valide.'
                             />
                             <InputText
@@ -204,10 +206,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 required={true}
                                 placeholder='Votre mot de passe...'
                                 pattern={passwordPattern}
-                                showErrorBorder={errorAfterSubmit.show}
-                                showErrorMessage={errorAfterSubmit.show}
-                                errorMessage={errorAfterSubmit.show ? errorAfterSubmit.message : "Veuillez entrer un mot de passe d'au moins 6 caractère"}
+                                errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
+                            {errorAfterSubmit.show && (
+                                <p className='error-message text--md error-500'>{errorAfterSubmit.message}</p>
+                            )}
                             <p className='clickable text--md' onClick={() => changeModalType('forgotPassword')}>Mot de passe oublié ?</p>
                             <Checkbox
                                 onChange={handleInputChange}
@@ -233,7 +236,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 required={true}
                                 placeholder='exemple@gmail.com'
                                 pattern={emailPattern}
-                                showErrorBorder={errorAfterSubmit.show}
                                 errorMessage='Veuillez entrer une adresse email valide.'
                             />
                             <InputText
@@ -247,7 +249,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 required={true}
                                 placeholder='Au moins 6 caractères'
                                 pattern={passwordPattern}
-                                showErrorBorder={errorAfterSubmit.show}
                                 errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
                             <InputText
@@ -260,10 +261,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 type='password'
                                 required={true}
                                 pattern={passwordPattern}
-                                showErrorBorder={errorAfterSubmit.show}
-                                showErrorMessage={errorAfterSubmit.show}
-                                errorMessage={allError.register.passwordMatch && !allError.register.passwordOne && !allError.register.passwordTwo ? "Les mots de passe ne correspondent pas." : errorAfterSubmit.show ? errorAfterSubmit.message : "Veuillez entrer un mot de passe d'au moins 6 caractère"}
+                                errorMessage="Veuillez entrer un mot de passe d'au moins 6 caractère"
                             />
+                            {allError.register.passwordMatch && !allError.register.passwordOne && !allError.register.passwordTwo && (
+                                <span className='error-message text--sm error-500'>Les mots de passe ne correspondent pas.</span>
+                            )}
+                            {errorAfterSubmit.show && (
+                                <p className='error-message text--md error-500'>{errorAfterSubmit.message}</p>
+                            )}
                             <p className='text-center text--md'>En créant un compte, vous acceptez les <span className='clickable' onClick={handleClickTOU}>conditions générale d'utilisation</span> de React-classic.</p>
                             <button className='btn btn--md btn--primary btn--modal-size' type='submit' disabled={hasErrors()}>S'inscrire</button>
                         </form>

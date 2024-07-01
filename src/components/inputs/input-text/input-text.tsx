@@ -1,8 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FocusEvent, useState } from 'react';
 
 interface InputTextProps {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onError: (error: boolean) => void;
+    onError?: (error: boolean) => void;
     id: string;
     name: string;
     label: string;
@@ -11,12 +11,10 @@ interface InputTextProps {
     required: boolean;
     placeholder?: string;
     pattern?: string;
-    showErrorBorder?: boolean;
-    showErrorMessage?: boolean;
     errorMessage?: string;
 }
 
-const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, label, value, type, required, placeholder = '', pattern = '', showErrorBorder = false, showErrorMessage = false, errorMessage = '' }) => {
+const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, label, value, type, required, placeholder = '', pattern = '', errorMessage = '' }) => {
     const [error, setError] = useState<string | null>(null);
 
     const validateField = (value: string): boolean => {
@@ -40,6 +38,7 @@ const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, labe
         }
         onChange(event);
     };
+
     return (
         <section className='input-container'>
             <label htmlFor={id}>{label}</label>
@@ -47,13 +46,13 @@ const InputText: React.FC<InputTextProps> = ({ onChange, onError, id, name, labe
                 id={id}
                 name={name}
                 type={type}
-                className={`input--text ${error || showErrorBorder ? 'input--error' : ''}`}
+                className={`input--text ${error ? 'input--error' : ''}`}
                 placeholder={placeholder}
                 onChange={handleChange}
                 value={value}
                 required={required}
             />
-            {showErrorMessage ? <span className='error-500 text--sm'>{errorMessage}</span> : error && <span className='error-500 text--sm'>{error}</span>}
+            {error && <span className='error-500 text--sm'>{error}</span>}
         </section>
     )
 }
