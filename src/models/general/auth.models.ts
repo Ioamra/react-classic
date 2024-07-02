@@ -19,6 +19,8 @@ export declare module AuthModels {
     }
 
     type IRegisterErrors = {
+        username_users: boolean;
+        name_users: boolean;
         email_users: boolean;
         passwordOne: boolean;
         passwordTwo: boolean;

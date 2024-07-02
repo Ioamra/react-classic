@@ -4,7 +4,7 @@ import './auth-modal.scss';
 import InputText from '../../inputs/input-text/input-text';
 import Checkbox from '../../inputs/checkbox/checkbox';
 import { ReactComponent as CloseIcon } from '../../../assets/svg/close.svg';
-import { login } from '../../../services/general/auth.service';
+import { AuthService } from '../../../services/general/auth.service';
 import { AuthModels } from '../../../models/general/auth.models';
 import TimedAlert from '../../alerts/timed-alert/timed-alert';
 import { AlertModels } from '../../../models/general/alert.models';
@@ -24,6 +24,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
         rememberMe: false
     });
     const [registerFormData, setRegisterFormData] = useState({
+        name_users: '',
+        username_users: '',
         email_users: '',
         passwordOne: '',
         passwordTwo: ''
@@ -31,7 +33,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
     const [allError, setAllError] = useState<AuthModels.IFormErrors>({
         login: { email_users: true, password_users: true },
-        register: { email_users: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
+        register: { name_users: true, username_users: true, email_users: true, passwordOne: true, passwordTwo: true, passwordMatch: true },
         forgotPassword: { forgotPassword: true },
     });
     const [alert, setAlert] = useState<AlertModels.ITimedAlert>({
@@ -115,7 +117,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (modalType === 'login') {
-            login(loginFormData).then(res => {
+            AuthService.login(loginFormData).then(res => {
                 console.log(res)
                 switch (res.status) {
                     case 200:
@@ -140,6 +142,27 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                 }
             })
         } else if (modalType === 'register') {
+            AuthService.register({ ...registerFormData, password_users: registerFormData.passwordOne}).then(res => {
+                console.log(res)
+                switch (res.status) {
+                    case 200:
+                        localStorage.setItem('accessToken', res.data);
+                        onClose();
+                        break;
+                    case 400:
+                        
+                        break;
+                    default:
+                        setAlert({
+                        show: true,
+                        type: 'error',
+                        message: 'Une erreur est survenue.',
+                        duration: 7500 
+                    });
+                    handleShowAlert();
+                        break;
+                }
+            })
             console.log(registerFormData);
         } else if (modalType === 'forgotPassword') {
             console.log(forgotPasswordEmail);
@@ -225,6 +248,26 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                     )}
                     {modalType === 'register' && (
                         <form onSubmit={handleSubmit}>
+                            <InputText
+                                onChange={handleInputChange}
+                                onError={(error) => handleError('register', 'name_users', error)}
+                                id='name_users'
+                                name='name_users'
+                                label='Nom'
+                                value={registerFormData.name_users}
+                                type='text'
+                                required={true}
+                            />
+                            <InputText
+                                onChange={handleInputChange}
+                                onError={(error) => handleError('register', 'username_users', error)}
+                                id='username_users'
+                                name='username_users'
+                                label='Prénom'
+                                value={registerFormData.username_users}
+                                type='text'
+                                required={true}
+                            />
                             <InputText
                                 onChange={handleInputChange}
                                 onError={(error) => handleError('register', 'email_users', error)}
