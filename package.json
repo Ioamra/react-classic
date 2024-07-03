@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nextui-org/button": "^2.0.34",
     "@nextui-org/react": "^2.4.2",
+    "@nextui-org/system": "^2.2.2",
+    "@nextui-org/theme": "^2.2.6",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,6 +14,7 @@
     "@types/node": "^16.18.101",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "framer-motion": "^11.2.12",
     "react": "^18.3.1",
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",
