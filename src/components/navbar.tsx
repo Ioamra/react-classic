@@ -7,11 +7,14 @@ import clsx from "clsx";
 import { ThemeSwitch } from "./theme-switch";
 import { SearchIcon } from "./icons/search-icon";
 import { Logo } from "./icons/logo";
-import { TwitterIcon } from "./icons/twitter-icon";
-import { DiscordIcon } from "./icons/discord-icon";
 import { GithubIcon } from "./icons/github-icon";
+import { UserIcon } from "./icons/user-icon";
 
-export const Navbar = () => {
+interface NavbarProps {
+  openModal: (tab: 'login' | 'register') => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ openModal }) => {
   const accessToken = localStorage.getItem('accessToken');
 
   const searchInput = (
@@ -39,7 +42,7 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <Logo />
+            <Logo size={50} />
             <p className="font-bold text-inherit">ACME</p>
           </Link>
         </NavbarBrand>
@@ -65,26 +68,24 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <Link isExternal href="https://github.com/Ioamra/react-classic/tree/nextui">
-            <GithubIcon className="text-default-500" />
+            <GithubIcon size={30} className="text-default-500" />
           </Link>
           <ThemeSwitch />
           {searchInput}
         </NavbarItem>
         <NavbarItem className="hidden sm:flex gap-4">
           {accessToken ? (
-            <></> // TODO : Ajouter un icon user
+            <UserIcon size={32} className="text-default-500" />
           ) : (
             <>
               <Button
-                as={Link}
-                href="/login"
+                onPress={() => openModal('login')}
                 variant="flat"
               >
                 Connexion
               </Button>
               <Button
-                as={Link}
-                href="/login"
+                onPress={() => openModal('register')}
                 variant="flat"
               >
                 Inscription
@@ -96,7 +97,7 @@ export const Navbar = () => {
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <Link isExternal href="https://github.com/Ioamra/react-classic/tree/nextui">
-          <GithubIcon className="text-default-500" />
+          <GithubIcon size={30} className="text-default-500" />
         </Link>
         <ThemeSwitch />
         <NavbarMenuToggle />
@@ -131,7 +132,8 @@ export const Navbar = () => {
                   color="primary"
                   href="#"
                   size="lg"
-                  >
+                  onPress={() => openModal('login')}
+                >
                   Connexion
                 </Link>
               </NavbarMenuItem>
@@ -140,7 +142,8 @@ export const Navbar = () => {
                   color="primary"
                   href="#"
                   size="lg"
-                  >
+                  onPress={() => openModal('register')}
+                >
                   Inscription
                 </Link>
               </NavbarMenuItem>

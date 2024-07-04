@@ -1,26 +1,21 @@
-import { FC, useState, useEffect } from "react";
-import { VisuallyHidden } from "@react-aria/visually-hidden";
-import { SwitchProps, useSwitch } from "@nextui-org/switch";
-import clsx from "clsx";
-
-import { useTheme } from "@/hooks/use-theme";
+import React from "react";
+import { useSwitch, SwitchProps } from "@nextui-org/react";
 import { MoonFilledIcon } from "./icons/moon-filled-icon";
 import { SunFilledIcon } from "./icons/sun-filled-icon";
+import { VisuallyHidden } from "@nextui-org/react";
+import clsx from 'clsx';
+import { useTheme } from "@/context/theme-context";
 
 export interface ThemeSwitchProps {
   className?: string;
   classNames?: SwitchProps["classNames"];
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({
+export const ThemeSwitch: React.FC<ThemeSwitchProps> = ({
   className,
   classNames,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
   const { theme, toggleTheme } = useTheme();
-
-  const onChange = toggleTheme;
 
   const {
     Component,
@@ -31,15 +26,8 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     getWrapperProps,
   } = useSwitch({
     isSelected: theme === "light",
-    onChange,
+    onChange: toggleTheme,
   });
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, [isMounted]);
-
-  // Prevent Hydration Mismatch
-  if (!isMounted) return <div className="w-6 h-6" />;
 
   return (
     <Component
@@ -74,9 +62,9 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         })}
       >
         {isSelected ? (
-          <MoonFilledIcon size={22} />
+          <MoonFilledIcon size={30} />
         ) : (
-          <SunFilledIcon size={22} />
+          <SunFilledIcon size={30} />
         )}
       </div>
     </Component>
