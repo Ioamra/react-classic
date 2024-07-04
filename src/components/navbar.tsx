@@ -64,48 +64,38 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal href="https://twitter.com/getnextui">
-            <TwitterIcon className="text-default-500" />
-          </Link>
-          <Link isExternal href="https://discord.gg/9b6yyZKmH4">
-            <DiscordIcon className="text-default-500" />
-          </Link>
-          <Link isExternal href="https://github.com/nextui-org/nextui">
+          <Link isExternal href="https://github.com/Ioamra/react-classic/tree/nextui">
             <GithubIcon className="text-default-500" />
           </Link>
           <ThemeSwitch />
+          {searchInput}
         </NavbarItem>
-        <NavbarItem className="hidden md:flex">{searchInput}</NavbarItem>
-        {accessToken ? (
-          <></> // TODO : Ajouter un icon user
-        ) : (
-          <NavbarItem className="hidden md:flex gap-2">
-            <Button
-              as={Link}
-              href="/login"
-              variant="flat"
-            >
-              Connexion
-            </Button>
-            <Button
-              as={Link}
-              href="/login"
-              variant="flat"
-            >
-              Inscription
-            </Button>
-          </NavbarItem>
-        )}
+        <NavbarItem className="hidden sm:flex gap-4">
+          {accessToken ? (
+            <></> // TODO : Ajouter un icon user
+          ) : (
+            <>
+              <Button
+                as={Link}
+                href="/login"
+                variant="flat"
+              >
+                Connexion
+              </Button>
+              <Button
+                as={Link}
+                href="/login"
+                variant="flat"
+              >
+                Inscription
+              </Button>
+            </>
+          )}
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <Link isExternal href="https://twitter.com/getnextui">
-          <TwitterIcon className="text-default-500" />
-        </Link>
-        <Link isExternal href="https://discord.gg/9b6yyZKmH4">
-          <DiscordIcon className="text-default-500" />
-        </Link>
-        <Link isExternal href="https://github.com/nextui-org/nextui">
+        <Link isExternal href="https://github.com/Ioamra/react-classic/tree/nextui">
           <GithubIcon className="text-default-500" />
         </Link>
         <ThemeSwitch />
