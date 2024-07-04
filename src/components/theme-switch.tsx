@@ -4,7 +4,8 @@ import { SwitchProps, useSwitch } from "@nextui-org/switch";
 import clsx from "clsx";
 
 import { useTheme } from "@/hooks/use-theme";
-import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
+import { MoonFilledIcon } from "./icons/moon-filled-icon";
+import { SunFilledIcon } from "./icons/sun-filled-icon";
 
 export interface ThemeSwitchProps {
   className?: string;

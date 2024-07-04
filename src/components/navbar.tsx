@@ -4,9 +4,12 @@ import { Input } from "@nextui-org/input";
 import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/navbar";
 import { link as linkStyles } from "@nextui-org/theme";
 import clsx from "clsx";
-import { TwitterIcon, GithubIcon, DiscordIcon, SearchIcon } from "@/components/icons";
-import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "./theme-switch";
+import { SearchIcon } from "./icons/search-icon";
+import { Logo } from "./icons/logo";
+import { TwitterIcon } from "./icons/twitter-icon";
+import { DiscordIcon } from "./icons/discord-icon";
+import { GithubIcon } from "./icons/github-icon";
 
 export const Navbar = () => {
   const accessToken = localStorage.getItem('accessToken');
