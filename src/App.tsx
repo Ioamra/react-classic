@@ -1,19 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {NextUIProvider} from "@nextui-org/react";
-import HomePage from './pages/home/home.page';
+import { Navbar } from "./components/navbar"
 
-const App: React.FC = () => {
+const App = () => {
+
   return (
-    <NextUIProvider>
-      <HomePage />
-      {/* <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </Router> */}
-    </NextUIProvider>
-  );
-};
+    <>
+      <Navbar/>
+    </>
+  )
+}
 
-export default App;
+export default App
