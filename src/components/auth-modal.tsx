@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { Tabs, Tab, Input, Link, Button, Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@nextui-org/react";
+import { Tabs, Tab, Input, Link, Button, Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
 import { AuthModels } from "@/models/general/auth.models";
 import { AuthService } from "@/services/general/auth.service";
 
