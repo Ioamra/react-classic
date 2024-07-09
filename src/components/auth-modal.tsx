@@ -1,7 +1,7 @@
-import React, { FormEvent, useState } from "react";
-import { Tabs, Tab, Input, Link, Button, Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
 import { AuthModels } from "@/models/general/auth.models";
 import { AuthService } from "@/services/general/auth.service";
+import { Button, Input, Link, Modal, ModalBody, ModalContent, ModalHeader, Tab, Tabs } from "@nextui-org/react";
+import React, { FormEvent, useState } from "react";
 
 interface AuthModalProps {
   isOpen: boolean;

@@ -1,14 +1,14 @@
 import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
-import { Navbar as NextUINavbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/navbar";
+import { Link } from "@nextui-org/link";
+import { NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Navbar as NextUINavbar } from "@nextui-org/navbar";
 import { link as linkStyles } from "@nextui-org/theme";
 import clsx from "clsx";
-import { ThemeSwitch } from "./theme-switch";
-import { SearchIcon } from "./icons/search-icon";
-import { Logo } from "./icons/logo";
 import { GithubIcon } from "./icons/github-icon";
+import { Logo } from "./icons/logo";
+import { SearchIcon } from "./icons/search-icon";
 import { UserIcon } from "./icons/user-icon";
+import { ThemeSwitch } from "./theme-switch";
 
 interface NavbarProps {
   openModal: (tab: "login" | "register") => void;

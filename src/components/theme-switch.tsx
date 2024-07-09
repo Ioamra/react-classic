@@ -1,10 +1,9 @@
+import { useTheme } from "@/context/theme-context";
+import { SwitchProps, useSwitch, VisuallyHidden } from "@nextui-org/react";
+import clsx from "clsx";
 import React from "react";
-import { useSwitch, SwitchProps } from "@nextui-org/react";
 import { MoonFilledIcon } from "./icons/moon-filled-icon";
 import { SunFilledIcon } from "./icons/sun-filled-icon";
-import { VisuallyHidden } from "@nextui-org/react";
-import clsx from "clsx";
-import { useTheme } from "@/context/theme-context";
 
 export interface ThemeSwitchProps {
   className?: string;
