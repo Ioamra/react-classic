@@ -40,6 +40,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, selectedTab }) =
           isInvalid = true;
           errorMessage = 'Veuillez entrer un mot de passe de plus de 6 caractères';
         }
+        if (name === 'password_users' && value.length >= 6 && validateEmail(loginForm.email_users)) {
+          setLoginFormError(prevData => ({
+            ...prevData,
+            ['email_users']: { isInvalid: false, errorMessage: '' },
+          }))
+        }
+        if (name === 'email_users' && loginForm.password_users.length >= 6) {
+          setLoginFormError(prevData => ({
+            ...prevData,
+            ['password_users']: { isInvalid: false, errorMessage: '' },
+          }))
+        }
       }
       if (typeof value === 'boolean') {
 
@@ -130,7 +142,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, selectedTab }) =
     console.log('IIXIXI')
     event.preventDefault();
     if (state === 'login') {
-      AuthService.login(loginForm).then(res => {
+      AuthService.login({...loginForm, password_users: loginForm.password_users}).then(res => {
         console.log(res)
         switch (res.status) {
           case 200:
@@ -138,7 +150,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, selectedTab }) =
             onClose();
             break;
           case 400:
-          
+            setLoginFormError(prevData => ({
+              ...prevData,
+              ['email_users']: { isInvalid: true, errorMessage: '' },
+              ['password_users']: { isInvalid: true, errorMessage: 'email ou mot de passe invalide' },
+            }))
             break;
           default:
           
@@ -245,7 +261,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, selectedTab }) =
                       </Link>
                     </p>
                     <div className="flex gap-2 justify-end">
-                      <Button fullWidth color="primary">
+                      <Button fullWidth color="primary" type="submit">
                         Se connecter
                       </Button>
                     </div>
@@ -300,7 +316,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, selectedTab }) =
                       </Link>
                     </p>
                     <div className="flex gap-2 justify-end">
-                      <Button fullWidth color="primary">
+                      <Button fullWidth color="primary" type="submit">
                         S'inscrire
                       </Button>
                     </div>
