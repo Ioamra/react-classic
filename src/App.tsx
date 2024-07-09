@@ -5,9 +5,9 @@ import { ThemeProvider } from "./context/theme-context";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTab, setModalTab] = useState<'login' | 'register'>('login');
+  const [modalTab, setModalTab] = useState<"login" | "register">("login");
 
-  const openModal = (tab: 'login' | 'register') => {
+  const openModal = (tab: "login" | "register") => {
     setModalTab(tab);
     setIsModalOpen(true);
   };
@@ -19,13 +19,9 @@ const App = () => {
   return (
     <ThemeProvider>
       <Navbar openModal={openModal} />
-      <AuthModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        selectedTab={modalTab}
-      />
+      <AuthModal isOpen={isModalOpen} onClose={closeModal} selectedTab={modalTab} />
     </ThemeProvider>
   );
-}
+};
 
 export default App;
