@@ -75,7 +75,9 @@ export const Navbar: React.FC<NavbarProps> = ({ openModal }) => {
         </NavbarItem>
         <NavbarItem className="hidden sm:flex gap-4">
           {accessToken ? (
-            <UserIcon size={32} className="text-default-500" />
+            <Link href="/profile" size="lg">
+              <UserIcon size={32} className="text-default-500"/>
+            </Link>
           ) : (
             <>
               <Button
@@ -119,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ openModal }) => {
             <NavbarMenuItem key="/profile">
               <Link
                 color="primary"
-                href="#"
+                href="/profile"
                 size="lg"
                 >
                 Profil
